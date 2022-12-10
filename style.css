@@ -1,0 +1,207 @@
+body{
+	font-family: sans-serif,'Roboto';
+}
+.header{
+	/*left: 80vh;
+	height: 62vh;
+	width: 80%;*/
+	height: 80vh;
+	background-image: 
+	url(images/header.jpg);
+	background-size: 100% 100%;
+	background-position: center;
+	border: 2px solid #eb5b34;
+
+}
+.header-button{
+	background-image: linear-gradient(to right,#e59b1e,#322004);
+	background-size: 200px 80px;
+	padding: 10px 40px;
+	border: 1px solid #a2b3eb;
+	text-decoration: underline 2px;
+	font-style: italic;
+}
+.padding-button{
+	padding-right: 120vh;
+	padding-top: 50vh;
+}
+.sidePanel{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	text-decoration: none;
+	border: 3px solid ghostwhite;
+}
+.sidebar{
+	left: -250px;
+	width: 250px;
+	height: 100%;
+	background: #283cd4;
+	position: fixed;
+	transition: all .5s;	
+}
+.sidebar header{
+	font-size: 22px;
+	font-style: oblique;
+	font-family: cursive;
+	color: white;
+	text-align: center;
+	text-decoration: underline;
+	line-height: 70px;
+	background: #d48928;
+	user-select: none;
+}
+.sidebar ul a{
+	display: block;
+	height: 100%;
+	width: 100%;
+	line-height: 65px;
+	font-size: 20px;
+	color: white;
+	padding-left: 40px;
+	box-sizing: border-box;
+	border-top: 1px solid whitesmoke;
+	border-bottom: 1px solid black;
+	transform: .4s;
+}
+ul li:hover a{
+	padding-left: 50px;
+}
+.sidePanel li a i{
+	margin-right: 16px;
+}
+#check{
+	display: none;
+}
+ #btn, #cancel{
+	position: absolute;
+	cursor: pointer;
+	background: black;
+	border-radius: 3px;
+}
+ #btn{
+	left: 20px;
+	top: 25px;
+	font-size: 33px;
+	background-color: black;
+	color: white;
+	padding: 6px 12px;
+	transition: all .5s;
+}
+ #cancel{
+	z-index: 1111;
+	left: 195px;
+	top: 28px;
+	padding: 5px 11px;
+	font-size: 30px;
+	color: blueviolet;
+	transition: all .5s ease;
+}
+#check:checked ~ .sidebar{
+	left: 0;
+}
+#check:checked ~ #btn{
+	left: 250px;
+	opacity: 0;
+	pointer-events: none;
+}
+#check:checked ~ #cancel{
+	left: 195px;
+}
+
+/* For login screen */
+.background{
+	background-image: linear-gradient(to right, #4038d6/*#d93dbf*/, mediumpurple);
+	height: 100%;
+	overflow: hidden;
+
+}
+.containerBox{	
+	top: 10%;
+	left: 37%;
+	position: relative;
+	text-align: center;
+	background-color: white;
+	padding: 20px;
+	height: 68vh;
+	width: 35vh;
+	border-radius: 10px;
+	border-color: darkblue;
+}
+.leftAlign{
+	align-items: flex-start;
+}
+/*@media only screen and (max-width:  700px){
+	.logo{
+		width: 50px;
+	}*/
+}
+/*.img{
+	align: center;
+	position: relative;
+	top: 3.8em;
+	left: 1.8em;
+	height: 265px;
+	width: 430px;
+	border-radius: 10px;
+	
+}*/
+
+.webText{
+	font-size: 1.8em;
+	font-family: cursive;
+	padding-bottom: 0;
+
+}
+.email,.password,.location,.mobilenumber,.firstname,.lastname{
+	border: none;
+	outline: none;
+	padding: 5px;
+	border-bottom: 2px solid blue;
+
+}
+
+#buttonLog, #buttonSign{
+	padding-left: 80px;
+	padding-right: 80px;
+	border-radius: 5px;
+	background-color: #334ed4;
+	color: white;
+	height: 25px;
+	border: 15px red;
+}
+#buttonLog:hover{
+	cursor: pointer;
+	background: red;
+	color: blueviolet;
+	letter-spacing: 0.225em;
+
+}
+
+#buttonSign:hover{
+	cursor: pointer;
+	background: red;
+	color: blueviolet;
+	letter-spacing: 0.225em;
+
+}
+/*signin*/
+.background-color-sign{
+	background-image: linear-gradient(to right, #4038d6/*#d93dbf*/, mediumpurple);
+	height: 700vh;
+	overflow: hidden;
+
+}
+.containerBoxSign{	
+	top: 20%;
+	left: 37%;
+	position: relative;
+	text-align: center;
+	background-color: white;
+	padding: 2px;
+	height: 90vh;
+	width: 40vh;
+	border-radius: 10px;
+	border: 2px darkred;
+	color: black;
+}
