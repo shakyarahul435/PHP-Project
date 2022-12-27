@@ -135,7 +135,7 @@ ul li:hover a{
 	.logo{
 		width: 50px;
 	}*/
-}
+
 /*.img{
 	align: center;
 	position: relative;
@@ -192,16 +192,29 @@ ul li:hover a{
 	overflow: hidden;
 
 }
-.containerBoxSign{	
+ .containerBoxSign{	
 	top: 20%;
 	left: 37%;
 	position: relative;
 	text-align: center;
 	background-color: white;
-	padding: 2px;
+	padding: 20px;
 	height: 90vh;
 	width: 40vh;
 	border-radius: 10px;
 	border: 2px darkred;
 	color: black;
+} 
+.table-responsives{
+	overflow-x: auto;
+	color: #283cd4;
 }
+
+#cart
+.background-color-cart{
+	background-image: linear-gradient(to right, #4038d6/*#d93dbf*/, mediumpurple);
+}
+
+.containerBoxCart{	
+	color: #283cd4;
+} 

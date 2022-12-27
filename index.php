@@ -1,103 +1,98 @@
 <?php
 include './backend/connect.php';
 session_start();
-// $_SESSION['name']=apple;
-//  echo $_SESSION[name];
-// echo $_SESSION['email'];
-// echo $_SESSION['apple'];
-//echo $_SESSION['email'];
-if(isset($SESSION['done'])){
-   /* echo $_SESSION[$email];*/
-    echo $_SESSION['email'];
-    // echo $_SESSION['email']=$email;
+if(!isset($_SESSION['email'])){
+    $_SESSION['message'] = 'Please Login First!!'; //important
+    header("location:login.php");
 }
-// $SESSION['email'] = $email;
-// echo $email;
-// echo $_SESSION["$email"];
-
-
-  // if($check !== false) {
-  //   echo "File is an image - " . $check["mime"] . ".";
-  //   $uploadOk = 1;
-  // } else {
-  //   echo "File is not an image.";
-  //   $uploadOk = 0;
-  // }
-
-
 if(isset($_POST['done'])){
- $filename = $_FILES["fileToUpload"]["name"];
-
+    $filename = $_FILES["fileToUpload"]["name"];
     $tempname = $_FILES["fileToUpload"]["tmp_name"];  
-
-        $folder = "uploads/".$filename;  
-
+    $folder = "uploads/".$filename;  
+    $jewelry = $_POST['jewelry'];
     
+    if ($jewelry == 0) {
+        echo "<script>alert('Couldnot Submit! Please select jewllery!!')</script>";
+        // return false;
 
-
-                $jewelry = $_POST['jewelry'];
-
-       
-                if ($jewelry!=0) {
-                    echo "<script>alert('Submitted Successfully!')</script>";
-                    
-                }else{
-                     echo "<script>alert('Couldn't Submit!')</script>";
-                 
-                
-                 }
-
-   if (move_uploaded_file($tempname, $folder)) {
-
+    }else{   
+        if (move_uploaded_file($tempname, $folder)) {
             $msg = "Image uploaded successfully";
+        }else{
+            $msg = "Failed to upload image";
+            }
+        // echo "<script>alert('insert called')</script>";
+        // $username = $_POST['username'];
+        $email= $_SESSION['email'];
+        
+        // $password= $_POST['password'];
+        $jewelry= $_POST['jewelry'];
+        $jewelryWedding= $_POST['jewelryWedding']??'';
+        $jewelryNecklace= $_POST['jewelryNecklace']??'';
+        $jewelryRing= $_POST['jewelryRing']??'';
+        $jewelryTilahari= $_POST['jewelryTilahari']??''; 
+
+        $mobilenumber= $_POST['mobilenumber'];
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $comment= $_POST['comment'];
+        $q1 = "SELECT * FROM `users` ";
+        $query1=mysqli_query($con,$q1);
+        $result = mysqli_fetch_array($query1);
+        $validate = false;
+        // echo  $jewelry.'<br>';
+        // echo  $jewelryWedding;
+        // exit;    
+        if($jewelry == "Wedding Set"){
+            if($jewelryWedding == ''){
+                $validate = true;
+            }
+            $jewelry = 'Wedding Set '. $jewelryWedding;
+        }elseif($jewelry == "Necklace"){
+            if($jewelryNecklace == ''){
+                $validate = true;
+            }
+            $jewelry = 'Necklace '. $jewelryNecklace;
+            
+        }elseif($jewelry == "Ring"){
+            if($jewelryRing == ''){
+                $validate = true;
+            }
+            $jewelry = 'Ring '. $jewelryRing;
+            
+        }elseif($jewelry == "Tilahari"){
+            if($jewelryTilahari == ''){
+                $validate = true;
+            }
+            $jewelry = 'Wedding Tilahari '. $jewelryTilahari;
+        }
+        // var_dump( $validate);
+        // exit;
+        if(!$validate){
+            $jewleyDetails = $jewelry;
+            $q = 'INSERT INTO crudtable(`email`,`password`,`jewelry`,`mobilenumber`,`imageUpload`,`comment`) VALUES ("'.$email.'","test","'.$jewleyDetails.'","'.$mobilenumber.'","'.$filename.'","'.$comment.'")';
+            $query=mysqli_query($con,$q);
+
+                $que = 'INSERT INTO `pricing`( `jewelry`, `weight`, `imageupload`, `price`) VALUES ("'.$jewelry.'","'.$weight.'","'.$filename.'","'.$price.'")';
+    $query = mysqli_query($con, $que);
+            // var_dump(mysqli_error($con));
+            // var_dump($query);
+            // exit;
+            if(!$query){
+                echo "<script>alert('Error Occured while adding details!!')</script>";
+                // return false;
+            }else{
+                echo "<script>alert('Deatails save successfully!!')</script>";
+            }
 
         }else{
+            echo "<script>alert('Please select correct jewlery type!!')</script>";
 
-            $msg = "Failed to upload image";
-
+        }
     }
-    // echo "<script>alert('insert called')</script>";
-    // $username = $_POST['username'];
-    $email= $_SESSION['email'];
-    // $password= $_POST['password'];
-    $jewelry= $_POST['jewelry'];
-    $jewelryWedding= $_POST['jewelryWedding'];
-    $jewelryNecklace= $_POST['jewelryNecklace'];
-    $jewelryRing= $_POST['jewelryRing'];
-    $jewelryTilahari= $_POST['jewelryTilahari']; 
 
-    $mobilenumber= $_POST['mobilenumber'];
-    $target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = 1;
-$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-// Check if image file is a actual image or fake image
-
-  // $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-    // $imageUpload= $_POST['fileToUpload'];
-    $comment= $_POST['comment'];
-
-    // $hashed_password = md5($password, PASSWORD_DEFAULT);      
-      // echo "<script>alert('{$username}')</script>";
-      //    echo "<script>alert('{$email}')</script>";
-      //       echo "<script>alert('{$password}')</script>";
-      //          echo "<script>alert('{$mobilenumber}')</script>";
-    // echo "<script>alert\"INSERT INTO crudtable(username,email, password,jewelry,mobilenumber) VALUES ('$username','$email','$password','$jewelry','$mobilenumber\"")script>";
-//WHERE username='$username' and password='$hashed_password'
-$q1 = "SELECT * FROM `users` ";
-$query1=mysqli_query($con,$q1);
-$result = mysqli_fetch_array($query1);
-
-/*if($result == 0){
-    alert("User not found");
-header("Location: signin.php");
-}else{*/
-                    // $query=mysqli_query($con,$q);
-    /*'$_SESSION['email']'*/
-    $q = "INSERT INTO crudtable(email,jewelry,mobilenumber,imageUpload,comment) VALUES ($email,$jewelry,$jewelryWedding,$jewelryNecklace,$jewelryRing,$jewelryTilahari','$mobilenumber','$filename','$comment')";
-    $query=mysqli_query($con,$q);
-    
-    /*}*/
 }
     
   
@@ -125,6 +120,9 @@ header("Location: signin.php");
         .d-none{
             display: none;
         }
+        .userEmail{
+            padding-right: 25px; 
+        }
     </style>
     <script>
     if ( window.history.replaceState ) {
@@ -135,9 +133,10 @@ header("Location: signin.php");
 
 <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="57">
     <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="mainNav">
-        <div class="container"><a class="navbar-brand" href="#page-top" style="color: rgb(71,48,43);"><span style="text-decoration: underline;">R.p. Jewellers</span></a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-align-justify"></i></button>
+        <div class="container"><a class="navbar-brand" href="#page-top" style="color: #83a885;"><span style="text-decoration: underline;">R.p. Jewellers</span></a><button data-bs-toggle="collapse" data-bs-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-align-justify"></i></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href='cart.php'><i class="fa-solid fa-cart-shopping"> Cart</i></a></li>
                     <li class="nav-item"><a class="nav-link" href="#about"><i class="fa-solid fa-circle-info"> About</i></a></li>
                     <li class="nav-item"><a class="nav-link" href="#services"><i class="fa-solid fa-taxi"> Services</i></a></li>
                     <li class="nav-item"><a class="nav-link" href="#jewelry"><i class="fa-solid fa-gem"> Jewellery</i></a></li>
@@ -145,15 +144,18 @@ header("Location: signin.php");
                     <li class="nav-item"><a class="nav-link" href="#order"><i class="fa-solid fa-bell-concierge"> Order Now</i></a></li>
                     <!-- <li class="nav-item"><a class="nav-link" href='signin.php'>Sign In</a></li> -->
                     <li class="nav-item"><a class="nav-link" href='logout.php' style="color: red;"><i class="fa-regular fa-circle-left"> Log Out</i></a></li>
-                   <!-- <li> <?php echo $_SESSION[$email] ?> </li>  -->
+                   <!-- <li> <?php echo $_SESSION[$email] ?> </li>   -->
                     </ul>
                 <a href="https://www.facebook.com/profile.php?id=100069825111686" target="_blank"><i class="fa-brands fa-facebook" style="color: blue;"> Facebook</i></a>
-
+                
 
             </div>
         </div>
-         <b style="color: blue; font-size: larger;"><?php echo 'Welcome '.$_SESSION['email']; /*session_unset();*/   ?></b> 
-    </nav>
+        <!-- <i class="fa-solid fa-user"> -->
+            <b style="color: blue; font-size: larger;" class='userEmail'><?php echo 'Welcome '.$_SESSION['name'];  
+         /*session_unset();*/  
+         ?></b></nav>
+         <!-- </i> -->
 
     <header class="text-center text-white d-flex masthead" style="background: url(&quot;assets/img/header.jpg&quot;) center / cover repeat;">
         <div class="container my-auto">
@@ -220,26 +222,39 @@ header("Location: signin.php");
         </div>
     </section>
 
+
+    <?php		
+$q = "select * from pricing";
+$query=mysqli_query($con,$q);
+while ($result = mysqli_fetch_array($query)) {
+    // code...
+
+
+?>
     <section id="jewelry" class="p-0">
-        <div class="container-fluid p-0">
+       <div class="container-fluid p-0">
             <div class="row g-0 popup-gallery">
-                <div class="col-sm-6 col-lg-4"><a class="portfolio-box" href="assets/img/fullsize/0.jpg"><img class="img-fluid" src="assets/img/thumbnails/0.jpg">
+                <div class="col-sm-6 col-lg-4"><a class="portfolio-box" href="./backend/uploads/<?php echo $result['imageupload']; ?>" alt="No Design" >
+                <img class="img-fluid" src="./backend/uploads/<?php echo $result['imageupload']; ?>" alt="No Design" >
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
                                 <div class="project-category text-faded"><span>Category</span></div>
-                                <div class="project-name"><span>Wedding Set-1</span></div>
-                                 <div class="project-name"><span>Weighting: 1.5 Tola</span></div>
-                                  <div class="project-name"><span>Price: Rs. 1,50,000</span></div>
-                            </div>
+                                <div class="project-name"><span><?php echo $result['jewelry']; ?></span></div>
+                                 <div class="project-name"><span>Weighting: <?php echo $result['weight']; ?> Tola</span></div>
+                                  <div class="project-name"><span>Price: Rs. <?php echo $result['price']; ?></span></div>
+                                  <div class="project-name"><span>Description: <?php echo $result['description']; ?></span></div>
+                            </div>                         
                         </div>
-                    </a></div>
-                <div class="col-sm-6 col-lg-4"><a class="portfolio-box" href="assets/img/fullsize/0.3.jpg"><img class="img-fluid" src="assets/img/thumbnails/0.3.jpg">
+                    </a>
+            </div>
+
+                <!-- <div class="col-sm-6 col-lg-4"><a class="portfolio-box" href="assets/img/fullsize/0.3.jpg"><img class="img-fluid" src="assets/img/thumbnails/0.3.jpg">
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
                                 <div class="project-category text-faded"><span>Category</span></div>
-                                <div class="project-name"><span>Tilhari-1</span></div>
-                                <div class="project-name"><span>Weighting: 1.5 Tola</span></div>
-                                  <div class="project-name"><span>Price: Rs. 1,50,000</span></div>
+                                <div class="project-name"><span><?php echo $result['jewelry']; ?></span></div>
+                                <div class="project-name"><span>Weighting: <?php echo $result['weight']; ?> Tola</span></div>
+                                  <div class="project-name"><span>Price: Rs. <?php echo $result['price']; ?></span></div>
                             </div>
                         </div>
                     </a></div>
@@ -247,13 +262,13 @@ header("Location: signin.php");
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
                                 <div class="project-category text-faded"><span>Category</span></div>
-                                <div class="project-name"><span>Ear Ring-1</span></div>
-                                <div class="project-name"><span>Weighting: 1.5 Tola</span></div>
-                                  <div class="project-name"><span>Price: Rs. 1,50,000</span></div>
+                                <div class="project-name"><span><?php echo $result['jewelry']; ?></span></div>
+                                <div class="project-name"><span>Weighting: <?php echo $result['weight']; ?> Tola</span></div>
+                                  <div class="project-name"><span>Price: Rs. <?php echo $result['price']; ?></span></div>
                             </div>
                         </div>
-                    </a></div>
-                <div class="col-sm-6 col-lg-4"><a class="portfolio-box" href="assets/img/fullsize/0.1.jpg"><img class="img-fluid" src="assets/img/thumbnails/0.1.jpg">
+                    </a></div> -->
+                <!-- <div class="col-sm-6 col-lg-4"><a class="portfolio-box" href="assets/img/fullsize/0.1.jpg"><img class="img-fluid" src="assets/img/thumbnails/0.1.jpg">
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">
                                 <div class="project-category text-faded"><span>Category</span></div>
@@ -342,10 +357,15 @@ header("Location: signin.php");
                                   <div class="project-name"><span>Price: Rs. 1,50,000</span></div>
                             </div>
                         </div>
-                    </a></div>    
+                    </a></div>     -->
             </div>
         </div>
     </section>
+    
+<?php
+}
+?>
+
     <section class="text-white bg-dark">
         <div class="container text-center">
             <h2 class="mb-4">R.P. jewellers is a renowned jewelry shop of Nepal.</h2><a class="btn btn-light btn-xl sr-button" role="button" data-aos="zoom-in" data-aos-duration="400" data-aos-once="true" href="map.html">Visit Now</a>
@@ -378,7 +398,7 @@ header("Location: signin.php");
             </div>
             <br>
                <!--  <label>Username</label>  -->
-                <input type="text" name="username" class="form-control" id="username" value=" " required><!-- <?php echo $_SESSION['email'];?> -->
+                <input type="text" name="username" class="form-control" id="username" value="<?php echo $_SESSION['email'];?> " required> 
                 <br>
 
        
@@ -390,39 +410,40 @@ header("Location: signin.php");
             
             <label for="jewelry" >Jewelry</label>
 
-            <select name="jewelry" id="jewelry" onchange="enableDetail(this)" >
-              <option>Select Jewelry</option>  
-              <option value="1">Wedding Set</option>
-              <option value="2">Necklace</option>
-              <option value="3">Ring</option>
-              <option value="4">Tilahari</option>
+            <select name="jewelry" id="jewelry"  onchange="enableDetail(this)" >
+              <option value = "0">Select Jewelry</option>  
+              <option value="Wedding Set">Wedding Set</option>
+              <option value="Necklace">Necklace</option>
+              <option value="Ring">Ring</option>
+              <option value="Tilahari">Tilahari</option>
             </select><br>
 
-            <select name="jewelryWedding" id="jewelryWedding" class="d-none" >
-                <option value="">Select WeddingSet</option>
+            <select name="jewelryWedding" id="jewelryWedding" placeholder="please select"  class="test d-none">
+                <!-- <option value="">Select WeddingSet</option> -->
+              <option value="" disabled selected>Please Select</option>
               <option value="weddingSet1">Wedding Set 1</option>
               <option value="weddingSet2">Wedding Set 2</option>
               <option value="weddingSet3">Wedding Set 3</option>
               <option value="weddingSet4">Wedding Set 4</option>
             </select><br>
 
-            <select name="jewelryNecklace" id="jewelryNecklace" class="d-none" >
-                <option value="">Select Necklace</option>
-              <option value="necklace1">Necklace 1</option>
-              <option value="necklace2">Necklace 2</option>
-              <option value="necklace3">Necklace 3</option>
-              <option value="necklace4">Necklace 4</option>
+            <select name="jewelryNecklace" id="jewelryNecklace" class="test d-none">
+                <option value="" disabled selected>Please Select</option>
+                <option value="necklace1">Necklace 1</option>
+                <option value="necklace2">Necklace 2</option>
+                <option value="necklace3">Necklace 3</option>
+                <option value="necklace4">Necklace 4</option>
             </select><br>
 
-            <select name="jewelryRing" id="jewelryRing" class="d-none" >
-                <option value="">Select Ring</option>
+            <select name="jewelryRing" id="jewelryRing" class="test d-none" >
+                <option value="" disabled selected>Please Select</option>
               <option value="ring1">Ring 1</option>
               <option value="ring2">Ring 2</option>
               <option value="ring3">Ring 3</option>
               <option value="ring4">Ring 4</option>
             </select><br>
 
-            <select name="jewelryTilahari" id="jewelryTilahari" class="d-none" >
+            <select name="jewelryTilahari" id="jewelryTilahari" class="test d-none">
                 <option value="">Select Tilahari</option>
               <option value="tilahari1">Tilahari 1</option>
               <option value="tilahari2">Tilahari 2</option>
@@ -433,24 +454,32 @@ header("Location: signin.php");
             <script type="text/javascript">
                 function enableDetail(answer){
                     console.log(answer);
-                    if(answer.value==1){
+                    if(answer.value=='Wedding Set'){
                         document.getElementById('jewelryWedding').classList.remove('d-none');
+                        document.getElementById('jewelryWedding').required = true;
                     }else{
+                        document.getElementById('jewelryWedding').required = false;
                         document.getElementById('jewelryWedding').classList.add('d-none');   
                     }
-                    if(answer.value==2){
+                    if(answer.value=='Necklace'){
                         document.getElementById('jewelryNecklace').classList.remove('d-none');
+                        document.getElementById('jewelryNecklace').required = true;
                     }else{
+                        document.getElementById('jewelryNecklace').required = false;
                         document.getElementById('jewelryNecklace').classList.add('d-none');
                     }
-                    if(answer.value==3){
+                    if(answer.value=='Ring'){
+                        document.getElementById('jewelryRing').required = true;
                         document.getElementById('jewelryRing').classList.remove('d-none');
                     }else{
+                        document.getElementById('jewelryRing').required = false;
                         document.getElementById('jewelryRing').classList.add('d-none');
                     }
-                    if(answer.value==4){
+                    if(answer.value=='Tilahari'){
+                        document.getElementById('jewelryTilahari').required = true;
                         document.getElementById('jewelryTilahari').classList.remove('d-none');
                     }else{
+                        document.getElementById('jewelryTilahari').required = false;
                         document.getElementById('jewelryTilahari').classList.add('d-none');
                     }
 
@@ -518,6 +547,6 @@ header("Location: signin.php");
     <script src="assets/js/creative.js"></script>
     <script src="assets/js/Animated-Pretty-Product-List-v12.js"></script>
 </body>
-</html>
+</html>    
 
 

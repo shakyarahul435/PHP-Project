@@ -12,6 +12,7 @@
   <link rel="stylesheet" type="text/css" href="demo.css">
 </head>
 <body>
+<button><a href="display.php">Back </a></button>
 	<div class="container">
 		<div class="col-lg-12">
 			<h1 class="text-warning text-center">Users Data</h1>

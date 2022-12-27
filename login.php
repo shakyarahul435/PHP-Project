@@ -2,29 +2,28 @@
     
 include("./backend/connect.php");
  session_start();
- 
 if(isset($_POST['login'])) {
 	// $id=$_POST['id'];
+	
+	$_SESSION['email']=$email = $_POST['email']; //important
+
 
 	$email = $_POST['email'];
-
 	$password = $_POST['password'];
-$q =   "SELECT * FROM users WHERE  email='"
+	$q =   "SELECT * FROM users WHERE  email='"
     . $email . "' AND
     password='" . md5($password) . "' ";
 
-$query=mysqli_query($con,$q);
-				$num = mysqli_fetch_array($query);
-
+	$query=mysqli_query($con,$q);
+	$num = mysqli_fetch_array($query);
 
 				// $result = mysqli_query($db, $sql) or die( mysqli_error($db));
     if($num ) {
-        // $row = mysqli_fetch_array($sql);
-
-		// $SESSION['firstname'] = $firstname;
-		
+        $name = $num['firstname'].' '.$num['lastname'];
+		$_SESSION['name'] = $name; //important
 
         header("location:index.php");
+
  //        exit();
  //        $q = "select * from users where id=$id";
         
@@ -43,6 +42,21 @@ $query=mysqli_query($con,$q);
  
 <?php
       }}
+
+	if(isset($_SESSION['message'])){
+		?>		
+		<hr>
+		<font color="red"><b>
+				<h3>
+					<?php
+						echo $_SESSION['message'];
+					?>
+				</br></h3>
+			</b>
+		</font>
+		<hr>
+		<?php
+	}
 ?>
 <!DOCTYPE html>
 <html>

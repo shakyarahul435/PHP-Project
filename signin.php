@@ -1,4 +1,5 @@
-<?php
+
+ <?php
 include './backend/connect.php';
 if(isset($_POST['done'])){
 	$firstname = $_POST['firstname'];
@@ -13,11 +14,11 @@ if(isset($_POST['done'])){
     $q = "INSERT INTO `users`(`firstname`, `lastname`, `location`, `username`, `password`,`mobilenumber`,`email`) VALUES ('$firstname','$lastname','$location','$username','$password','$mobilenumber','$email')";
     $query=mysqli_query($con,$q);
 if($query){
-	header("Location: index.php#order");
+	header("Location: login.php");
     }
 }
 
-?>
+?> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,8 +29,9 @@ if($query){
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body class="background-color-sign">
-	<div class="containerBoxSign">
+	
 		<form method="post" action="signin.php">
+		<div class="containerBoxSign">
 		<h2 class="webText"><u>--Sign In--</u></h2>
 		<div class="leftAlign">
 			<p><i class="fa-solid fa-user"> First Name</i></p>
@@ -51,6 +53,7 @@ if($query){
 		<br>
 		<p><i class="fa-solid fa-lock"> Password</i></p>
 		<input type="Password" id="password" name="password" class="password" placeholder="-Password Here" required>
+		<i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer;"></i>
 
 		<p>
 		<button id="buttonSign" onclick="pressed()" name="done"><b>Sign In</b></button>
@@ -62,12 +65,24 @@ if($query){
 				alert("Field cannot be empty.");
 				
 			}else{
-				return location.href='index.php#order';
+				return location.href='login.php';
 			}
 			}
 			
 			
 			
+		</script>
+		<script>
+			const togglePassword = document.querySelector('#togglePassword');
+ 		    const password = document.querySelector('#password');
+
+ 		togglePassword.addEventListener('click', function (e) {
+  		  // toggle the type attribute
+    	const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+   			 password.setAttribute('type', type);
+    	// toggle the eye slash icon
+  		  this.classList.toggle('fa fa-eye-slash');
+		});
 		</script>
 		</p>
 		</div>
